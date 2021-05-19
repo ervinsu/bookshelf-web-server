@@ -1,4 +1,4 @@
-const books = require('../books');
+const { books, detailBooks } = require('../books');
 
 const getBookHandler = (request, h) => {
   const bookId = request.params.bookId ? request.params.bookId : '';
@@ -13,8 +13,7 @@ const getBookHandler = (request, h) => {
       .code(200);
   }
 
-  const book = books.filter((n) => n.id === bookId)[0];
-
+  const book = detailBooks.filter((n) => n.id === bookId)[0];
   if (book !== undefined) {
     return h
       .response({

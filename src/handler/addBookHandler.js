@@ -1,6 +1,6 @@
 const { nanoid } = require('nanoid');
 
-const books = require('../books');
+const { books, detailBooks } = require('../books');
 const validateBook = require('../helper/validateBook');
 
 const addBookHandler = (request, h) => {
@@ -20,7 +20,7 @@ const addBookHandler = (request, h) => {
   const insertedAt = new Date().toISOString();
   const updatedAt = insertedAt;
 
-  const newBook = {
+  const newDetailBook = {
     id,
     name,
     year,
@@ -34,11 +34,11 @@ const addBookHandler = (request, h) => {
     insertedAt,
     updatedAt,
   };
-
-  const response = validateBook(newBook, h);
+  const response = validateBook(newDetailBook, h, false);
 
   if (response.statusCode === 200) {
-    books.push(newBook);
+    books.push({ id, name, publisher });
+    detailBooks.push(newDetailBook);
   } else {
     return response;
   }

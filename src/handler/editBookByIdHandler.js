@@ -1,4 +1,4 @@
-const books = require('../books');
+const { books, detailBooks } = require('../books');
 const validateBook = require('../helper/validateBook');
 
 const editBookByIdHandler = (request, h) => {
@@ -18,8 +18,13 @@ const editBookByIdHandler = (request, h) => {
   } = request.payload;
 
   if (index !== -1) {
-    books[index] = {
+    const tempBook = {
       ...books[index],
+      name,
+      publisher,
+    };
+    const tempDetailbook = {
+      ...detailBooks[index],
       name,
       year,
       author,
@@ -30,11 +35,16 @@ const editBookByIdHandler = (request, h) => {
       reading,
       updatedAt,
     };
-    const response = validateBook(books[index], h);
+
+    console.log(tempDetailbook);
+    const response = validateBook(tempDetailbook, h, true);
 
     if (response.statusCode !== 200) {
       return response;
     }
+
+    detailBooks[index] = tempDetailbook;
+    books[index] = tempBook;
 
     return h
       .response({
